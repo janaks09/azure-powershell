@@ -57,11 +57,10 @@
 	</Target>
 
 	<Target Name="DeclareXunitTests">
-    <UsingTask TaskName="SmartTestingTask" AssemblyFile=".\tools\SmartTesterTask\SmartTesterTask\bin\Debug\SmartTesterTask.dll" />
-    <SmartTestingTask  RepositoryOwner="Azure" RepositoryName="azure-powershell" PullRequestNumber="$(PullRequestNumber)">
+    <SmartTestingTask  RepositoryOwner="Azure" RepositoryName="azure-powershell" PullRequestNumber="$(PullRequestNumber)" MapFilePath=".\map.json">
       <Output TaskParameter ="TestAssemblies" ItemName="XUnitTests"/>
     </SmartTestingTask>
-    <Message Text="Found this test assemblies: @(TestAssembliesList)"/>			
+    <Message Text="Found this test assemblies: @(XUnitTests)"/>			
 	</Target>
 
 	<Target Name="InvokeXUnit" DependsOnTargets="DeclareXunitTests">
@@ -132,7 +131,7 @@
 			<!-- We want to run setup tests related to signing that can only be run on signed bits -->
 			<SetupReleaseTests Include=".\setup\PowerShellSetup.Test\bin\Release\PowerShellSetup.Test.dll" />
 		</ItemGroup>
-		
+		<!--
 		<xunit 
 			Assemblies="@(SetupDebugTests)"
 			AppDomains="true"
@@ -159,6 +158,8 @@
 			DiagnosticMessages="false"
 			ContinueOnError="false"
 			Condition=" '$(Configuration)' == 'Release' AND '$(scope)' == 'all' AND '$(CodeSign)' == 'true' "/>
+      
+      -->
 	</Target>
 	
 	<Target Name="TestManagement">
